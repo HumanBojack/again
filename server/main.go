@@ -28,7 +28,7 @@ func main() {
 	// Web router
 	router := http.NewServeMux()
 
-	handler := routing.NewHandler(db.NewGormDB(database))
+	handler := routing.NewJsonHandler(db.NewGormDB(database))
 	routing.CreateRoutes(router, handler)
 
 	// Middlewares
