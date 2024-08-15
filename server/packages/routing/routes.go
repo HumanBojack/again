@@ -9,5 +9,6 @@ func CreateRoutes(router *http.ServeMux, h TasksHandler) {
 		w.Write([]byte("Hello World"))
 	})
 
+	router.Handle("POST /task", http.HandlerFunc(h.CreateTask))
 	router.Handle("GET /tasks", http.HandlerFunc(h.GetTasks))
 }

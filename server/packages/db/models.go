@@ -8,8 +8,12 @@ import (
 
 type Task struct {
 	gorm.Model
-	Title           string
-	Description     string
-	LastCompletedAt *time.Time
-	Interval        time.Duration
+	TaskInput
+	LastCompletedAt *time.Time `json:"last_completed_at"`
+}
+
+type TaskInput struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Interval    int    `json:"interval"`
 }

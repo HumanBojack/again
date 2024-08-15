@@ -16,7 +16,25 @@ func NewHandler(db db.Database) *Handler {
 }
 
 type TasksHandler interface {
+	CreateTask(w http.ResponseWriter, r *http.Request)
 	GetTasks(w http.ResponseWriter, r *http.Request)
+}
+
+func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
+	var task db.TaskInput
+	err := json.NewDecoder(r.Body).Decode(&task)
+	if err != nil {
+		http.Error(w, "Failed to decode request body", http.StatusBadRequest)
+		return
+	}
+
+	err = h.DB.CreateTask(&task)
+	if err != nil {
+		http.Error(w, "Failed to create task", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(task)
 }
 
 func (h *Handler) GetTasks(w http.ResponseWriter, r *http.Request) {

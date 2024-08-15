@@ -1,0 +1,23 @@
+meta {
+  name: create task
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/task
+  body: json
+  auth: none
+}
+
+headers {
+  X-API-KEY: {{API_KEY}}
+}
+
+body:json {
+  {
+    "title": "Clean my room",
+    "description": "",
+    "interval": 604800
+  }
+}
