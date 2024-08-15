@@ -1,0 +1,15 @@
+meta {
+  name: Delete a Task
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{host}}/task/1
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-KEY: {{API_KEY}}
+}
