@@ -1,0 +1,15 @@
+meta {
+  name: hello
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-KEY: {{API_KEY}}
+}
