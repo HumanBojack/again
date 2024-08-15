@@ -1,0 +1,20 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Containerfile.dev
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - API_KEY=123456
+    volumes:
+      - cache:/root/.cache/go-build
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+
+volumes:
+  cache:
+
