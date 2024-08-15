@@ -1,0 +1,15 @@
+meta {
+  name: tasks
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/tasks
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-KEY: {{API_KEY}}
+}

@@ -27,7 +27,9 @@ func main() {
 
 	// Web router
 	router := http.NewServeMux()
-	routing.CreateRoutes(router, db.NewGormDB(database))
+
+	handler := routing.NewHandler(db.NewGormDB(database))
+	routing.CreateRoutes(router, handler)
 
 	// Middlewares
 	apiKey := os.Getenv("API_KEY")
