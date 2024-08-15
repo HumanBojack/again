@@ -7,6 +7,7 @@ import (
 
 	"github.com/humanbojack/again/server/packages/db"
 	"github.com/humanbojack/again/server/packages/middlewares"
+	"github.com/humanbojack/again/server/packages/routing"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -26,9 +27,7 @@ func main() {
 
 	// Web router
 	router := http.NewServeMux()
-	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello World"))
-	})
+	routing.CreateRoutes(router, db.NewGormDB(database))
 
 	// Middlewares
 	apiKey := os.Getenv("API_KEY")
