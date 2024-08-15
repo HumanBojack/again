@@ -34,3 +34,15 @@ func ApiKeyMiddlewareGenerator(apiKey string) Middleware {
 		}
 	}
 }
+
+func ContentTypeMiddlewareGenerator(handlers map[string]http.Handler) Middleware {
+	return func(next http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			if handler, ok := handlers[r.Header.Get("Content-Type")]; ok {
+				handler.ServeHTTP(w, r)
+				return
+			}
+			next(w, r)
+		}
+	}
+}

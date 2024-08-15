@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func CreateRoutes(router *http.ServeMux, h TasksHandler) {
+func CreateRoutes(router *http.ServeMux, h Handler) {
 	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello World"))
 	})
