@@ -11,9 +11,9 @@ func NewGormDB(db *gorm.DB) *GormDB {
 }
 
 type Database interface {
-	CreateTask(task *TaskInput) error
+	CreateTask(task *Task) error
 	GetTask(id string) (*Task, error)
-	UpdateTask(id string, task *TaskInput) error
+	UpdateTask(id string, task *Task) error
 	DeleteTask(id string) error
 	GetAllTasks() ([]Task, error)
 }

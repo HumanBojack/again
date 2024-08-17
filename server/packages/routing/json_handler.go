@@ -23,13 +23,16 @@ func (h *JsonHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.DB.CreateTask(&task)
+	newTask := db.Task{
+		TaskInput: task,
+	}
+	err = h.DB.CreateTask(&newTask)
 	if err != nil {
 		http.Error(w, "Failed to create task", http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(task)
+	json.NewEncoder(w).Encode(newTask)
 }
 
 func (h *JsonHandler) GetTask(w http.ResponseWriter, r *http.Request) {
@@ -57,14 +60,18 @@ func (h *JsonHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.DB.UpdateTask(id, &task)
+	newTask := db.Task{
+		TaskInput: task,
+	}
+
+	err = h.DB.UpdateTask(id, &newTask)
 	if err != nil {
 		http.Error(w, "Failed to update task", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(task)
+	json.NewEncoder(w).Encode(newTask)
 }
 
 func (h *JsonHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
