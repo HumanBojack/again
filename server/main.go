@@ -26,13 +26,10 @@ func main() {
 	log.Println("Migrated the schema")
 
 	// Web router
-	jr := http.NewServeMux()
 	hr := http.NewServeMux()
 
 	app_db := db.NewGormDB(database)
-	jh := routing.NewJsonHandler(app_db)
 	hh := routing.NewHtmlHandler(app_db)
-	routing.CreateRoutes(jr, jh)
 	routing.CreateRoutes(hr, hh)
 
 	// Middlewares
@@ -42,17 +39,10 @@ func main() {
 	}
 	apiKeyMiddleware := middlewares.ApiKeyMiddlewareGenerator(apiKey)
 
-	contentTypeMiddleware := middlewares.ContentTypeMiddlewareGenerator(
-		map[string]http.Handler{
-			"application/json": jr,
-			"text/html":        hr,
-		},
-	)
-
 	// Start server
 	server := &http.Server{
 		Addr:    ":8080",
-		Handler: middlewares.Chain(jr, contentTypeMiddleware, apiKeyMiddleware, middlewares.LogMiddleware),
+		Handler: middlewares.Chain(hr, apiKeyMiddleware, middlewares.LogMiddleware),
 	}
 
 	server.ListenAndServe()

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tasks</title>
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" integrity="sha384-ZBXiYtYQ6hJ2Y0ZNoYuI+Nq5MqWBr+chMrS/RkXpNzQCApHEhOt2aY8EJgqwHLkJ" crossorigin="anonymous"></script>
+</head>
+<body>
+  <h1>Tasks</h1>
+  <ul>
+  {{range .}}
+    <li>{{ .Title }} - {{ .Description }} - {{ .Frequency }} - {{ .LastCompletedAt }}</li>
+  {{end}}
+  </ul>
+  <h1>Insert new one</h1>
+  <form hx-post="/task">
+      <input name="Title" type="text" required/>
+      <input name="Description" type="text" required/>
+      <input name="Frequency" type="text" required/>
+      <!-- TODO: set value to now using JS -->
+      <input name="LastCompleted" type="datetime-local" />
+
+      <button type="submit">Send</button>
+  </form>
+</body>
+</html>

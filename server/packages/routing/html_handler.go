@@ -1,10 +1,12 @@
 package routing
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
 	"github.com/humanbojack/again/server/packages/db"
+	"github.com/humanbojack/again/server/packages/templates"
 )
 
 type HtmlHandler struct {
@@ -16,7 +18,28 @@ func NewHtmlHandler(db db.Database) *HtmlHandler {
 }
 
 func (h *HtmlHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Create Task"))
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, fmt.Sprintf("failed to parse form: %s", err.Error()), http.StatusBadRequest)
+		return
+	}
+
+	ti, err := db.TaskInputFromForm(r.PostForm)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("failed to parse frequency: %s", err.Error()), http.StatusInternalServerError)
+		return
+	}
+	err = h.DB.CreateTask(&db.Task{TaskInput: ti})
+	if err != nil {
+		http.Error(w, fmt.Sprintf("failed to insert in db: %s", err.Error()), http.StatusInternalServerError)
+		return
+	}
+
+	tmpl := `
+		<h1>task correctly inserted</h1>
+	`
+	t := template.Must(template.New("a").Parse(tmpl))
+	t.Execute(w, nil)
 }
 
 func (h *HtmlHandler) GetTask(w http.ResponseWriter, r *http.Request) {
@@ -39,22 +62,11 @@ func (h *HtmlHandler) GetTasks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "text/html")
-	tmpl := `
-	<!DOCTYPE html>
-	<html>
-	<head>
-		<title>Tasks</title>
-	</head>
-	<body>
-		<h1>Tasks</h1>
-		<ul>
-		{{range .}}
-			<li>{{.Title}}</li>
-		{{end}}
-		</ul>
-	</body>
-	</html>
-	`
-	t := template.Must(template.New("tasks").Parse(tmpl))
+
+	t, err := template.ParseFS(templates.FS, "html/tasks.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	t.Execute(w, tasks)
 }
