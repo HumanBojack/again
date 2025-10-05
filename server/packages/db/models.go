@@ -40,9 +40,15 @@ func TaskInputFromForm(form url.Values) (TaskInput, error) {
 		}
 
 		if k == "LastCompleted" {
-			lastCompleted, err := time.Parse("2006-01-02T15:04", v[0])
-			if err != nil {
-				return TaskInput{}, err
+			var lastCompleted time.Time
+			if v[0] == "" {
+				lastCompleted = time.Now()
+			} else {
+				var err error
+				lastCompleted, err = time.Parse("2006-01-02T15:04", v[0])
+				if err != nil {
+					return TaskInput{}, err
+				}
 			}
 			t.LastCompletedAt = &lastCompleted
 			continue
