@@ -21,6 +21,7 @@ type TaskInput struct {
 	LastCompletedAt *time.Time    `json:"last_completed_at,omitempty"`
 }
 
+// TaskInputFromForm creates a new TaskInput from a HTML form
 // TODO: move to a service instead
 func TaskInputFromForm(form url.Values) (TaskInput, error) {
 	t := TaskInput{}

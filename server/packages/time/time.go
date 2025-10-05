@@ -1,3 +1,4 @@
+// Package time provides function for application related time
 package time
 
 import (

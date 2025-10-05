@@ -37,7 +37,7 @@ func main() {
 	if apiKey == "" {
 		log.Println("API_KEY is not set, the server will not be protected by an API key")
 	}
-	apiKeyMiddleware := middlewares.ApiKeyMiddlewareGenerator(apiKey)
+	apiKeyMiddleware := middlewares.APIKeyMiddlewareGenerator(apiKey)
 
 	// Start server
 	server := &http.Server{

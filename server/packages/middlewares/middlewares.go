@@ -1,3 +1,4 @@
+// Package middlewares is used to create custom middlewares used by the app router
 package middlewares
 
 import (
@@ -23,7 +24,7 @@ func LogMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func ApiKeyMiddlewareGenerator(apiKey string) Middleware {
+func APIKeyMiddlewareGenerator(apiKey string) Middleware {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			if apiKey != "" && r.Header.Get("X-API-KEY") != apiKey {
