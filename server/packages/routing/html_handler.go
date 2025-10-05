@@ -35,11 +35,12 @@ func (h *HTMLHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl := `
-		<h1>task correctly inserted</h1>
-	`
-	t := template.Must(template.New("a").Parse(tmpl))
-	t.Execute(w, nil)
+	t, err := template.ParseFS(templates.FS, "html/tasks.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	t.ExecuteTemplate(w, "task", ti)
 }
 
 func (h *HTMLHandler) GetTask(w http.ResponseWriter, r *http.Request) {
@@ -68,5 +69,5 @@ func (h *HTMLHandler) GetTasks(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	t.Execute(w, tasks)
+	t.ExecuteTemplate(w, "base", tasks)
 }
