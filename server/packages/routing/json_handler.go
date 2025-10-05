@@ -7,15 +7,15 @@ import (
 	"github.com/humanbojack/again/server/packages/db"
 )
 
-type JsonHandler struct {
+type JSONHandler struct {
 	DB db.Database
 }
 
-func NewJsonHandler(db db.Database) *JsonHandler {
-	return &JsonHandler{DB: db}
+func NewJSONHandler(db db.Database) *JSONHandler {
+	return &JSONHandler{DB: db}
 }
 
-func (h *JsonHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
+func (h *JSONHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	var task db.TaskInput
 	err := json.NewDecoder(r.Body).Decode(&task)
 	if err != nil {
@@ -35,7 +35,7 @@ func (h *JsonHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newTask)
 }
 
-func (h *JsonHandler) GetTask(w http.ResponseWriter, r *http.Request) {
+func (h *JSONHandler) GetTask(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	task, err := h.DB.GetTask(id)
 	if err != nil {
@@ -51,7 +51,7 @@ func (h *JsonHandler) GetTask(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(task)
 }
 
-func (h *JsonHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
+func (h *JSONHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	var task db.TaskInput
 	err := json.NewDecoder(r.Body).Decode(&task)
@@ -74,7 +74,7 @@ func (h *JsonHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newTask)
 }
 
-func (h *JsonHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
+func (h *JSONHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	err := h.DB.DeleteTask(id)
 	if err != nil {
@@ -84,7 +84,7 @@ func (h *JsonHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (h *JsonHandler) GetTasks(w http.ResponseWriter, r *http.Request) {
+func (h *JSONHandler) GetTasks(w http.ResponseWriter, r *http.Request) {
 	tasks, err := h.DB.GetAllTasks()
 	if err != nil {
 		http.Error(w, "Failed to get tasks", http.StatusInternalServerError)

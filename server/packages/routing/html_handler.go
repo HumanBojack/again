@@ -9,15 +9,15 @@ import (
 	"github.com/humanbojack/again/server/packages/templates"
 )
 
-type HtmlHandler struct {
+type HTMLHandler struct {
 	DB db.Database
 }
 
-func NewHtmlHandler(db db.Database) *HtmlHandler {
-	return &HtmlHandler{DB: db}
+func NewHTMLHandler(db db.Database) *HTMLHandler {
+	return &HTMLHandler{DB: db}
 }
 
-func (h *HtmlHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
+func (h *HTMLHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, fmt.Sprintf("failed to parse form: %s", err.Error()), http.StatusBadRequest)
@@ -42,19 +42,19 @@ func (h *HtmlHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, nil)
 }
 
-func (h *HtmlHandler) GetTask(w http.ResponseWriter, r *http.Request) {
+func (h *HTMLHandler) GetTask(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Get Task"))
 }
 
-func (h *HtmlHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
+func (h *HTMLHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Update Task"))
 }
 
-func (h *HtmlHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
+func (h *HTMLHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Delete Task"))
 }
 
-func (h *HtmlHandler) GetTasks(w http.ResponseWriter, r *http.Request) {
+func (h *HTMLHandler) GetTasks(w http.ResponseWriter, r *http.Request) {
 	tasks, err := h.DB.GetAllTasks()
 	if err != nil {
 		http.Error(w, "Failed to get tasks", http.StatusInternalServerError)

@@ -1,3 +1,4 @@
+// Package routing provides the http route entries and handlers for the app
 package routing
 
 import (

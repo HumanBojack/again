@@ -28,8 +28,8 @@ func main() {
 	// Web router
 	hr := http.NewServeMux()
 
-	app_db := db.NewGormDB(database)
-	hh := routing.NewHtmlHandler(app_db)
+	appDB := db.NewGormDB(database)
+	hh := routing.NewHTMLHandler(appDB)
 	routing.CreateRoutes(hr, hh)
 
 	// Middlewares

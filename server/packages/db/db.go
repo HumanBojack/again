@@ -1,3 +1,4 @@
+// Package db provides the db models and methods to abstract database operations
 package db
 
 import "gorm.io/gorm"
